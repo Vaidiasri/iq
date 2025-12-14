@@ -18,5 +18,8 @@
     "url": "https://github.com/Vaidiasri/iq/issues"
   },
   "homepage": "https://github.com/Vaidiasri/iq#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@clerk/clerk-react": "^5.58.1"
+  }
 }
