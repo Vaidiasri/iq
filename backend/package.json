@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
     "dev": "nodemon src/server.js",
     "start": "node src/server.js"
   },
@@ -17,5 +19,10 @@
     "express": "^5.2.1",
     "mongoose": "^9.0.1",
     "nodemon": "^3.1.11"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.8",
+    "supertest": "^7.0.0",
+    "vitest": "^2.1.8"
   }
 }
