@@ -2,10 +2,18 @@ import express from "express";
 import path from "path";
 import { ENV } from "./lib/env.js";
 import { connectDB } from "./lib/db.js";
+import cors from "cors";
+import { serve } from "inngest/express";
+import { inngest, functions } from "./lib/inngest.js";
 const app = express();
 const __dirname = path.resolve();
 
 console.log(ENV.PORT);
+// bhai thode middelware add karle
+app.use(express.json())
+// credentials true => means  server  allows a  browser to includes cookieson request
+app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
+app.use("/api/inngest", serve({ client: inngest, functions }));
 
 app.get("/health", (req, res) => {
   res.status(200).json({ mess: "api is up and running" });
@@ -32,4 +40,4 @@ const protocol = async () => {
     console.log("Error to start  the  server ");
   }
 };
-protocol();
+protocol(); 

@@ -4,7 +4,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm install --prefix backend && npm install --prefix frontend/project && npm run build --prefix frontend/project",
+    "build": "npm install --prefix backend && npm install --prefix frontend/project --include=dev && npm run build --prefix frontend/project",
     "start": "npm run start --prefix backend"
   },
   "repository": {
