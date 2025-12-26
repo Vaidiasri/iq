@@ -17,7 +17,7 @@ const syncUser = inngest.createFunction(
       name: `${first_name || ""} ${last_name || ""}`,
       profileImage: image_url,
     };
-    await User.findOneAndUpdate({ clerkId: id }, userData, {
+    const newUser = await User.findOneAndUpdate({ clerkId: id }, userData, {
       upsert: true,
       new: true,
     });
