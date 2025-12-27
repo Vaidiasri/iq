@@ -6,6 +6,7 @@ import cors from "cors";
 import { serve } from "inngest/express";
 import { inngest, functions } from "./lib/inngest.js";
 import {clerkMiddleware} from "@clerk/express"
+import chatRoutes from "./routes/chatRoutes.js"
 const app = express();
 const __dirname = path.resolve();
 
@@ -29,7 +30,7 @@ app.get("/health", (req, res) => {
 //     res.status(500).json({message:"Internal Server Error"})
 //   }
 // })
-
+app.use("/api/chat",chatRoutes)
 if (ENV.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "../frontend/project/dist")));
 
