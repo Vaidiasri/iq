@@ -20,7 +20,14 @@ workspace/
 │       └── server.js    # Entry point
 ├── frontend/            # React + TypeScript Frontend
 │   └── project/
+│       ├── public/      # Static assets
 │       └── src/
+│           ├── assets/  # Images, fonts, etc.
+│           ├── lib/     # Utility functions
+│           ├── pages/   # React pages/routes
+│           ├── App.tsx  # Main App component
+│           ├── main.tsx # Entry point
+│           └── index.css # Global styles
 └── package.json         # Root package configuration
 ```
 
@@ -41,10 +48,18 @@ workspace/
 ### Frontend
 
 - **Framework**: React 19.2.0
-- **Language**: TypeScript
-- **Build Tool**: Vite
+- **Language**: TypeScript 5.9.3
+- **Build Tool**: Vite 7.2.4
 - **Authentication**: Clerk React (@clerk/clerk-react)
-- **Styling**: CSS
+- **Styling**:
+  - TailwindCSS 4.1.18
+  - DaisyUI 5.5.14 (Component Library)
+  - Custom CSS
+- **Routing**: React Router 7.11.0
+- **State Management**: TanStack React Query 5.90.16
+- **HTTP Client**: Axios 1.13.2
+- **Notifications**: React Hot Toast 2.6.0
+- **Linting**: ESLint with TypeScript support
 
 ## ✨ Features Implemented
 
@@ -296,12 +311,40 @@ The application uses a custom connection protocol that:
 2. Starts the Express server only after successful DB connection
 3. Exits gracefully on connection failure
 
-## 🎨 Frontend
+## 🎨 Frontend Architecture
 
-- React 19 with TypeScript
-- Vite for fast development and optimized builds
-- Clerk React for authentication UI
-- Modern CSS styling
+### Core Technologies
+
+- **React 19** with TypeScript for type safety
+- **Vite** for lightning-fast development and optimized production builds
+- **TailwindCSS 4** with **DaisyUI 5** for modern, responsive UI components
+- **React Router 7** for client-side routing
+- **TanStack React Query** for server state management and caching
+- **Axios** for HTTP requests with interceptors
+- **React Hot Toast** for elegant notifications
+
+### Project Structure
+
+- **`pages/`**: Route components (HomePage, AboutPage, etc.)
+- **`lib/`**: Utility functions and configurations
+- **`assets/`**: Static resources (images, fonts)
+- **`App.tsx`**: Main application component with routing
+- **`main.tsx`**: Application entry point with Clerk provider
+
+### Styling Approach
+
+- **TailwindCSS** for utility-first styling
+- **DaisyUI** for pre-built, customizable components
+- **Custom CSS** for specific design requirements
+- Responsive design with mobile-first approach
+
+### State Management
+
+- **TanStack React Query** for:
+  - Server state caching
+  - Automatic background refetching
+  - Optimistic updates
+  - Request deduplication
 
 ---
 
