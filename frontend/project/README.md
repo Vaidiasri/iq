@@ -1,73 +1,208 @@
-# React + TypeScript + Vite
+# 🚀 React + TypeScript + Vite Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application built with React 19, TypeScript, Vite, and styled with Tailwind CSS v4 + DaisyUI v5 (Forest Theme).
 
-Currently, two official plugins are available:
+## ✨ Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- ⚡ **Vite** - Lightning-fast development server and build tool
+- ⚛️ **React 19** - Latest React with modern features
+- 🔷 **TypeScript** - Type-safe development
+- 🎨 **Tailwind CSS v4** - Latest utility-first CSS framework
+- 🌲 **DaisyUI v5 (Forest Theme)** - Beautiful component library with dark green theme
+- 🔐 **Clerk Authentication** - Secure user authentication and management
+- 🔄 **React Router v7** - Client-side routing
+- 📡 **TanStack Query** - Powerful data fetching and state management
+- 🌐 **Axios** - HTTP client for API requests
+- 🎉 **React Hot Toast** - Beautiful toast notifications
+- 🎯 **Lucide React** - Modern icon library
 
-## React Compiler
+## 📦 Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Core
 
-## Expanding the ESLint configuration
+- **React** 19.2.0
+- **TypeScript** 5.9.3
+- **Vite** 7.2.4
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Styling
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- **Tailwind CSS** 4.1.18
+- **DaisyUI** 5.5.14 (Forest Theme)
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Libraries
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- **@clerk/clerk-react** - Authentication
+- **@tanstack/react-query** - Data fetching
+- **react-router** - Routing
+- **axios** - HTTP requests
+- **react-hot-toast** - Notifications
+- **lucide-react** - Icons
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js (v18 or higher)
+- npm or yarn
+
+### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <your-repo-url>
+   cd project
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+
+   Create a `.env` file in the root directory:
+
+   ```env
+   VITE_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key_here
+   ```
+
+4. **Start development server**
+
+   ```bash
+   npm run dev
+   ```
+
+   The app will be available at `http://localhost:5174/`
+
+## 📜 Available Scripts
+
+| Command           | Description                              |
+| ----------------- | ---------------------------------------- |
+| `npm run dev`     | Start development server with hot reload |
+| `npm run build`   | Build for production                     |
+| `npm run preview` | Preview production build locally         |
+| `npm run lint`    | Run ESLint to check code quality         |
+
+## 🎨 DaisyUI Forest Theme
+
+This project uses the **Forest Theme** from DaisyUI v5, which provides:
+
+- 🌲 Dark green color palette
+- 🌙 Dark mode by default
+- 🎯 Consistent component styling
+
+### Using DaisyUI Components
+
+```tsx
+// Button example
+<button className="btn btn-primary">Click Me</button>
+
+// Card example
+<div className="card bg-base-200 shadow-xl">
+  <div className="card-body">
+    <h2 className="card-title">Card Title</h2>
+    <p>Card content goes here</p>
+  </div>
+</div>
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 📁 Project Structure
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
 ```
+project/
+├── public/          # Static assets
+├── src/
+│   ├── assets/      # Images, fonts, etc.
+│   ├── lib/         # Utility functions and configurations
+│   ├── pages/       # Page components
+│   │   ├── HomePage.tsx
+│   │   ├── ProblemsPage.tsx
+│   │   └── AboutPage.tsx
+│   ├── App.tsx      # Main app component with routing
+│   ├── main.tsx     # App entry point
+│   └── index.css    # Global styles and Tailwind imports
+├── index.html       # HTML template
+├── vite.config.ts   # Vite configuration
+├── tsconfig.json    # TypeScript configuration
+└── package.json     # Project dependencies
+```
+
+## 🔐 Authentication
+
+This project uses **Clerk** for authentication. Protected routes automatically redirect unauthenticated users to the home page.
+
+### Example Protected Route
+
+```tsx
+<Route
+  path="/problems"
+  element={isSignedIn ? <ProblemsPage /> : <Navigate to="/" />}
+/>
+```
+
+## 🛠️ Configuration
+
+### Tailwind CSS v4 + DaisyUI v5
+
+The project uses CSS-first configuration for Tailwind v4:
+
+**`src/index.css`**
+
+```css
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: forest;
+}
+```
+
+**`index.html`**
+
+```html
+<html lang="en" data-theme="forest"></html>
+```
+
+## 🌐 Routing
+
+Routes are defined in `App.tsx`:
+
+- `/` - Home page (public)
+- `/problems` - Problems page (protected, requires authentication)
+
+## 📝 Development Notes
+
+- **Hot Module Replacement (HMR)** is enabled for instant updates during development
+- **ESLint** is configured for code quality checks
+- **TypeScript** strict mode is enabled for better type safety
+
+## 🚧 Building for Production
+
+```bash
+npm run build
+```
+
+This will create an optimized production build in the `dist/` directory.
+
+To preview the production build locally:
+
+```bash
+npm run preview
+```
+
+## 📄 License
+
+This project is private and not licensed for public use.
+
+## 🤝 Contributing
+
+This is a private project. If you have access and want to contribute, please follow the standard Git workflow:
+
+1. Create a feature branch
+2. Make your changes
+3. Submit a pull request
+
+---
+
+**Built with ❤️ using React, TypeScript, and Vite**
