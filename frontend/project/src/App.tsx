@@ -1,10 +1,4 @@
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-  useUser,
-} from "@clerk/clerk-react";
+import { useUser } from "@clerk/clerk-react";
 import { Routes, Route, Navigate } from "react-router";
 import HomePage from "./pages/HomePage";
 import ProblemsPage from "./pages/ProblemsPage";
