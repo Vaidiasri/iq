@@ -1,7 +1,9 @@
+import NavBar from "../component/NavBar";
+
 const ProblemsPage = () => {
   return (
-    <div>
-      <h1>Problems Page</h1>
+    <div className="min-h-screen bg-base-200">
+      <NavBar />
     </div>
   );
 };
