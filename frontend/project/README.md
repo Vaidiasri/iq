@@ -78,12 +78,37 @@ A modern web application built with React 19, TypeScript, Vite, and styled with 
 
 ## 📜 Available Scripts
 
+### Development
+
 | Command           | Description                              |
 | ----------------- | ---------------------------------------- |
 | `npm run dev`     | Start development server with hot reload |
 | `npm run build`   | Build for production                     |
 | `npm run preview` | Preview production build locally         |
-| `npm run lint`    | Run ESLint to check code quality         |
+
+### Code Quality & Formatting
+
+| Command                | Description                                           |
+| ---------------------- | ----------------------------------------------------- |
+| `npm run type-check`   | Check TypeScript errors without building              |
+| `npm run lint`         | Run ESLint to check code quality                      |
+| `npm run lint:fix`     | Automatically fix ESLint errors                       |
+| `npm run format`       | Format code with Prettier                             |
+| `npm run format:check` | Check if code is properly formatted (no changes made) |
+| `npm run check-all`    | ⭐ Run all checks (TypeScript + ESLint + Prettier)    |
+
+### Recommended Workflow
+
+Before committing code, run:
+
+```bash
+# Auto-fix formatting and linting issues
+npm run format
+npm run lint:fix
+
+# Verify everything is correct
+npm run check-all
+```
 
 ## 🎨 DaisyUI Forest Theme
 
@@ -164,6 +189,32 @@ The project uses CSS-first configuration for Tailwind v4:
 <html lang="en" data-theme="forest"></html>
 ```
 
+### Prettier (Code Formatting)
+
+The project uses **Prettier** for consistent code formatting:
+
+**`.prettierrc`**
+
+```json
+{
+  "semi": true,
+  "trailingComma": "es5",
+  "singleQuote": false,
+  "printWidth": 80,
+  "tabWidth": 2,
+  "useTabs": false,
+  "arrowParens": "always",
+  "endOfLine": "auto"
+}
+```
+
+**Features:**
+
+- ✅ Automatic code formatting
+- ✅ Consistent style across the project
+- ✅ Integrates with ESLint
+- ✅ Format on save (recommended in VS Code)
+
 ## 🌐 Routing
 
 Routes are defined in `App.tsx`:
@@ -176,6 +227,7 @@ Routes are defined in `App.tsx`:
 - **Hot Module Replacement (HMR)** is enabled for instant updates during development
 - **ESLint** is configured for code quality checks
 - **TypeScript** strict mode is enabled for better type safety
+- **Prettier** ensures consistent code formatting
 
 ## 🚧 Building for Production
 
