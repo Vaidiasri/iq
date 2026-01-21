@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, Navigate } from "react-router";
 import {
   ArrowRightIcon,
   CheckIcon,
@@ -8,9 +8,20 @@ import {
   VideoIcon,
   ZapIcon,
 } from "lucide-react";
-import { SignInButton } from "@clerk/clerk-react";
+import { SignInButton, useUser } from "@clerk/clerk-react";
 
 function HomePage() {
+  const { isSignedIn, isLoaded } = useUser();
+
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-base-100">
+        <span className="loading loading-spinner loading-lg text-primary"></span>
+      </div>
+    );
+  }
+
+  if (isSignedIn) return <Navigate to="/dashboard" />;
   return (
     <div className="bg-gradient-to-br from-base-100 via-base-200 to-base-300">
       {/* NAVBAR */}
@@ -36,12 +47,25 @@ function HomePage() {
           </Link>
 
           {/* AUTH BTN */}
-          <SignInButton mode="modal">
-            <button className="group px-6 py-3 bg-gradient-to-r from-primary to-secondary rounded-xl text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center gap-2">
-              <span>Get Started</span>
+          {/* AUTH BTN */}
+          {!isSignedIn && (
+            <SignInButton mode="modal">
+              <button className="group px-6 py-3 bg-gradient-to-r from-primary to-secondary rounded-xl text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center gap-2">
+                <span>Get Started</span>
+                <ArrowRightIcon className="size-4 group-hover:translate-x-0.5 transition-transform" />
+              </button>
+            </SignInButton>
+          )}
+
+          {isSignedIn && (
+            <Link
+              to={"/dashboard"}
+              className="group px-6 py-3 bg-gradient-to-r from-primary to-secondary rounded-xl text-white font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 flex items-center gap-2"
+            >
+              <span>Dashboard</span>
               <ArrowRightIcon className="size-4 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-          </SignInButton>
+            </Link>
+          )}
         </div>
       </nav>
 
@@ -87,12 +111,20 @@ function HomePage() {
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4">
-              <SignInButton mode="modal">
-                <button className="btn btn-primary btn-lg">
+              {!isSignedIn && (
+                <SignInButton mode="modal">
+                  <button className="btn btn-primary btn-lg">
+                    Start Coding Now
+                    <ArrowRightIcon className="size-5" />
+                  </button>
+                </SignInButton>
+              )}
+              {isSignedIn && (
+                <Link to="/dashboard" className="btn btn-primary btn-lg">
                   Start Coding Now
                   <ArrowRightIcon className="size-5" />
-                </button>
-              </SignInButton>
+                </Link>
+              )}
 
               <button className="btn btn-outline btn-lg">
                 <VideoIcon className="size-5" />

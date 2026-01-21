@@ -1,8 +1,9 @@
 import { useUser } from "@clerk/clerk-react";
 import { Routes, Route, Navigate } from "react-router";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/HomePage.tsx";
 import ProblemsPage from "./pages/ProblemsPage";
 import DashboardPage from "./pages/DashboardPage";
+import ProblemPage from "./pages/ProblemPage"; // Missing import added
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -42,17 +43,29 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            // Pehle check karo ki Clerk load hua ya nahi
             !isLoaded ? (
-              // Agar Clerk abhi load ho raha hai, toh loading spinner dikhao
               <div className="flex items-center justify-center min-h-screen">
                 <span className="loading loading-spinner loading-lg text-primary"></span>
               </div>
             ) : isSignedIn ? (
-              // Agar user logged in hai, toh page dikhao
               <DashboardPage />
             ) : (
-              // Agar user logged in nahi hai, toh home page par redirect karo
+              <Navigate to="/" />
+            )
+          }
+        />
+
+        {/* Individual Problem Route */}
+        <Route
+          path="/problem/:pid"
+          element={
+            !isLoaded ? (
+              <div className="flex items-center justify-center min-h-screen">
+                <span className="loading loading-spinner loading-lg text-primary"></span>
+              </div>
+            ) : isSignedIn ? (
+              <ProblemPage />
+            ) : (
               <Navigate to="/" />
             )
           }
