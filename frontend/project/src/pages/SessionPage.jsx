@@ -95,6 +95,13 @@ function SessionPage() {
     }
   };
 
+  if (loadingSession) {
+    return (
+      <div className="h-screen flex items-center justify-center bg-base-100">
+        <Loader2Icon className="w-12 h-12 animate-spin text-primary" />
+      </div>
+    );
+  }
   return (
     <div className="h-screen bg-base-100 flex flex-col">
       <Navbar />
@@ -129,8 +136,8 @@ function SessionPage() {
                             session?.difficulty
                           )}`}
                         >
-                          {session?.difficulty.slice(0, 1).toUpperCase() +
-                            session?.difficulty.slice(1) || "Easy"}
+                          {session?.difficulty?.slice(0, 1).toUpperCase() +
+                            session?.difficulty?.slice(1) || "Easy"}
                         </span>
                         {isHost && session?.status === "active" && (
                           <button

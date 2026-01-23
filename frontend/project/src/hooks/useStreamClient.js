@@ -16,9 +16,9 @@ function useStreamClient(session, loadingSession, isHost, isParticipant) {
     let chatClientInstance = null;
 
     const initCall = async () => {
-      if (!session?.callId) return;
-      if (!isHost && !isParticipant) return;
-      if (session.status === "completed") return;
+      if (!session?.callId) return setIsInitializingCall(false);
+      if (!isHost && !isParticipant) return setIsInitializingCall(false);
+      if (session.status === "completed") return setIsInitializingCall(false);
 
       try {
         const { token, userId, userName, userImage } = await sessionApi.getStreamToken();
