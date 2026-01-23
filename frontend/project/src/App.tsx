@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage.tsx";
 import ProblemsPage from "./pages/ProblemsPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProblemPage from "./pages/ProblemPage"; // Missing import added
+import SessionPage from "./pages/SessionPage";
 import { Toaster } from "react-hot-toast";
 
 function App() {
@@ -65,6 +66,21 @@ function App() {
               </div>
             ) : isSignedIn ? (
               <ProblemPage />
+            ) : (
+              <Navigate to="/" />
+            )
+          }
+        />
+        {/* Session Route */}
+        <Route
+          path="/session/:id"
+          element={
+            !isLoaded ? (
+              <div className="flex items-center justify-center min-h-screen">
+                <span className="loading loading-spinner loading-lg text-primary"></span>
+              </div>
+            ) : isSignedIn ? (
+              <SessionPage />
             ) : (
               <Navigate to="/" />
             )
