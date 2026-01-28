@@ -23,6 +23,7 @@ workspace/
 │       ├── public/      # Static assets
 │       └── src/
 │           ├── assets/  # Images, fonts, etc.
+│           ├── data/    # Problem definitions
 │           ├── lib/     # Utility functions
 │           ├── pages/   # React pages/routes
 │           ├── App.tsx  # Main App component
@@ -169,6 +170,18 @@ Complete CRUD operations for coding sessions:
 - `GET /:id` - Get session by ID (protected)
 - `POST /:id/join` - Join a session (protected)
 - `POST /:id/end` - End a session (protected)
+
+### 7. Rich Problem Database
+
+- **120+ LeetCode Problems**: Comprehensive collection of Easy, Medium, and Hard problems.
+- **Multi-language Support**: Starter code available for JavaScript, Python, and Java.
+- **Detailed Metadata**: Each problem includes descriptions, constraints, examples, and tags.
+
+### 8. Code Execution Engine
+
+- **Piston API Integration**: Secure, sandboxed code execution for multiple languages.
+- **Real-time Feedback**: Instant output and error reporting for code submissions.
+- **Multi-language Support**: Run code in JavaScript, Python, and Java.
 
 ## 🔧 Configuration
 

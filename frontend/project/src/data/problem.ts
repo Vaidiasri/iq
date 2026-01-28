@@ -39,47 +39,7 @@ export const PROBLEMS: Record<string, Problem> = {
       "java": "[0, 1]\n[1, 2]"
     }
   },
-  "problem-1": {
-    "id": "problem-1",
-    "title": "Two Sum",
-    "difficulty": "Easy",
-    "category": "Array • Hash Table",
-    "description": {
-      "text": "Given an array of integers nums and an integer target, return indices of the two numbers such that they add up to target.",
-      "notes": [
-        "Given an array of integers nums and an integer target, return indices of the two numbers such that t... (See full description on web)"
-      ]
-    },
-    "examples": [
-      {
-        "input": "nums = [2,7,11,15], target = 9",
-        "output": "[0,1]",
-        "explanation": "Because nums[0] + nums[1] == 9, we return [0, 1]."
-      },
-      {
-        "input": "nums = [3,2,4], target = 6",
-        "output": "[1,2]"
-      },
-      {
-        "input": "nums = [3,3], target = 6",
-        "output": "[0,1]"
-      }
-    ],
-    "constraints": [
-      "2 <= nums.length <= 104",
-      "109 <= nums[i] <= 109"
-    ],
-    "starterCode": {
-      "javascript": "/**\n * @param {any} input\n * @return {any}\n */\nfunction solve(input) {\n  // Write your solution here\n  \n}",
-      "python": "def solve(input):\n    # Write your solution here\n    pass",
-      "java": "class Solution {\n    public Object solve(Object input) {\n        // Write your solution here\n        return null;\n    }\n}"
-    },
-    "expectedOutput": {
-      "javascript": "Run tests to see output",
-      "python": "Run tests to see output",
-      "java": "Run tests to see output"
-    }
-  },
+
   "problem-2": {
     "id": "problem-2",
     "title": "Add Two Numbers",
