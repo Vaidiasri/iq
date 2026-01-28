@@ -1,7 +1,11 @@
 import { useUser } from "@clerk/clerk-react";
 import { ArrowRightIcon, SparklesIcon, ZapIcon } from "lucide-react";
 
-function WelcomeSection({ onCreateSession }) {
+interface WelcomeSectionProps {
+  onCreateSession: () => void;
+}
+
+function WelcomeSection({ onCreateSession }: WelcomeSectionProps) {
   const { user } = useUser();
 
   return (

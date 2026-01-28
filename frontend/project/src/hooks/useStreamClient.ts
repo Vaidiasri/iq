@@ -1,33 +1,43 @@
 import { useState, useEffect } from "react";
-import { StreamChat } from "stream-chat";
+import { StreamChat, Channel } from "stream-chat";
+import { StreamVideoClient } from "@stream-io/video-react-sdk";
+import type { Call } from "@stream-io/video-react-sdk";
 import toast from "react-hot-toast";
 import { initializeStreamClient, disconnectStreamClient } from "../lib/stream";
 import { sessionApi } from "../api/sessions";
+import type { Session } from "../types";
 
-function useStreamClient(session, loadingSession, isHost, isParticipant) {
-  const [streamClient, setStreamClient] = useState(null);
-  const [call, setCall] = useState(null);
-  const [chatClient, setChatClient] = useState(null);
-  const [channel, setChannel] = useState(null);
+function useStreamClient(
+  session: Session | null | undefined,
+  loadingSession: boolean,
+  isHost: boolean,
+  isParticipant: boolean
+) {
+  const [streamClient, setStreamClient] = useState<StreamVideoClient | null>(null);
+  const [call, setCall] = useState<Call | null>(null);
+  const [chatClient, setChatClient] = useState<StreamChat | null>(null);
+  const [channel, setChannel] = useState<Channel | null>(null);
   const [isInitializingCall, setIsInitializingCall] = useState(true);
 
   useEffect(() => {
-    let videoCall = null;
-    let chatClientInstance = null;
+    let videoCall: Call | null = null;
+    let chatClientInstance: StreamChat | null = null;
 
     const initCall = async () => {
       if (!session?.callId) return setIsInitializingCall(false);
+      // Wait until we know if it's the host or participant before giving up? 
+      // Or if the logic implies they MUST be one of them, then this is fine.
       if (!isHost && !isParticipant) return setIsInitializingCall(false);
       if (session.status === "completed") return setIsInitializingCall(false);
 
       try {
-        const { token, userId, userName, userImage } = await sessionApi.getStreamToken();
+        const { token, userId, name, image } = await sessionApi.getStreamToken();
 
         const client = await initializeStreamClient(
           {
             id: userId,
-            name: userName,
-            image: userImage,
+            name: name,
+            image: image,
           },
           token
         );
@@ -44,8 +54,8 @@ function useStreamClient(session, loadingSession, isHost, isParticipant) {
         await chatClientInstance.connectUser(
           {
             id: userId,
-            name: userName,
-            image: userImage,
+            name: name,
+            image: image,
           },
           token
         );

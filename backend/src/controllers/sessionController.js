@@ -1,4 +1,4 @@
-import { chatClient, streamClient, upsertStreamUser } from "../lib/stream.js";
+import { chatClient, streamClient, upsertStreamUser, createStreamCall, createStreamChannel } from "../lib/stream.js";
 import Session from "../models/session.js";
 
 export async function createSession(req, res) {
@@ -9,91 +9,58 @@ export async function createSession(req, res) {
     const user = req.user;
 
     console.log("=== Creating Session ===");
-    console.log("Problem:", problem);
-    console.log("Difficulty:", difficulty);
-    console.log("User ID:", userId);
-    console.log("Clerk ID:", clerkId);
-
+    
     if (!problem || !difficulty) {
       return res.status(400).json({ message: "Problem and difficulty are required" });
     }
 
-    // ensure user is synced to stream
-    try {
-      console.log("Step 1: Upserting Stream user...");
-      await upsertStreamUser({
-        id: clerkId,
-        name: user.name,
-        image: user.profileImage,
-      });
-      console.log("✓ Stream user upserted successfully");
-    } catch (error) {
-      console.error("✗ Failed to upsert Stream user:", error);
-      throw new Error(`Failed to sync user with Stream: ${error.message}`);
-    }
+    // Step 1: Sync User
+    await upsertStreamUser({
+      id: clerkId,
+      name: user.name,
+      image: user.profileImage,
+    });
 
-    // generate a unique call id for stream video
+    // Step 2: Generate ID
     const callId = `session_${Date.now()}_${Math.random().toString(36).substring(7)}`;
-    console.log("Step 2: Generated call ID:", callId);
 
-    // create session in db
+    // Step 3: Create DB Session
+    let session;
     try {
-      console.log("Step 3: Creating session in database...");
-      const session = await Session.create({ problem, difficulty, host: userId, callId });
+      session = await Session.create({ problem, difficulty, host: userId, callId });
       console.log("✓ Session created in DB:", session._id);
-
-      // create stream video call
-      try {
-        console.log("Step 4: Creating Stream video call...");
-        await streamClient.video.call("default", callId).getOrCreate({
-          data: {
-            created_by_id: clerkId,
-            custom: { problem, difficulty, sessionId: session._id.toString() },
-          },
-        });
-        console.log("✓ Stream video call created successfully");
-      } catch (error) {
-        console.error("✗ Failed to create Stream video call:", error);
-        console.error("Error details:", error.response?.data || error.message);
-        // Delete the session from DB since video call creation failed
-        await Session.findByIdAndDelete(session._id);
-        throw new Error(`Failed to create video call: ${error.message}`);
-      }
-
-      // chat messaging
-      try {
-        console.log("Step 5: Creating chat channel...");
-        const channel = chatClient.channel("messaging", callId, {
-          name: `${problem} Session`,
-          created_by_id: clerkId,
-          members: [clerkId],
-        });
-
-        await channel.create();
-        console.log("✓ Chat channel created successfully");
-      } catch (error) {
-        console.error("✗ Failed to create chat channel:", error);
-        console.error("Error details:", error.response?.data || error.message);
-        // Delete the session and video call since chat creation failed
-        await Session.findByIdAndDelete(session._id);
-        await streamClient.video.call("default", callId).delete({ hard: true });
-        throw new Error(`Failed to create chat channel: ${error.message}`);
-      }
-
-      console.log("=== Session Created Successfully ===");
-      res.status(201).json({ session });
     } catch (error) {
-      // If it's already a thrown error from above, re-throw it
-      if (error.message.startsWith("Failed to")) {
-        throw error;
-      }
       console.error("✗ Failed to create session in DB:", error);
       throw new Error(`Failed to create session: ${error.message}`);
     }
+
+    // Step 4: Create Stream Video Call
+    try {
+      await createStreamCall(callId, clerkId, { 
+        problem, 
+        difficulty, 
+        sessionId: session._id.toString() 
+      });
+    } catch (error) {
+      await Session.findByIdAndDelete(session._id);
+      throw new Error(`Failed to create video call: ${error.message}`);
+    }
+
+    // Step 5: Create Chat Channel
+    try {
+      await createStreamChannel(callId, clerkId, `${problem} Session`);
+    } catch (error) {
+      await Session.findByIdAndDelete(session._id);
+      await streamClient.video.call("default", callId).delete({ hard: true });
+      throw new Error(`Failed to create chat channel: ${error.message}`);
+    }
+
+    console.log("=== Session Created Successfully ===");
+    res.status(201).json({ session });
+
   } catch (error) {
     console.error("=== Session Creation Failed ===");
     console.error("Error:", error.message);
-    console.error("Stack:", error.stack);
     res.status(500).json({ message: error.message });
   }
 }

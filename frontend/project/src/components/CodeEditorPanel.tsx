@@ -1,6 +1,15 @@
 import Editor from "@monaco-editor/react";
 import { Loader2Icon, PlayIcon } from "lucide-react";
-import { LANGUAGE_CONFIG } from "../data/problems";
+import { LANGUAGE_CONFIG } from "../data/problem";
+
+interface CodeEditorPanelProps {
+  selectedLanguage: string;
+  code: string;
+  isRunning: boolean;
+  onLanguageChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  onCodeChange: (value: string | undefined) => void;
+  onRunCode: () => void;
+}
 
 function CodeEditorPanel({
   selectedLanguage,
@@ -9,7 +18,7 @@ function CodeEditorPanel({
   onLanguageChange,
   onCodeChange,
   onRunCode,
-}) {
+}: CodeEditorPanelProps) {
   return (
     <div className="h-full bg-base-300 flex flex-col">
       <div className="flex items-center justify-between px-4 py-3 bg-base-100 border-t border-base-300">
@@ -19,7 +28,11 @@ function CodeEditorPanel({
             alt={LANGUAGE_CONFIG[selectedLanguage].name}
             className="size-6"
           />
-          <select className="select select-sm" value={selectedLanguage} onChange={onLanguageChange}>
+          <select
+            className="select select-sm"
+            value={selectedLanguage}
+            onChange={onLanguageChange}
+          >
             {Object.entries(LANGUAGE_CONFIG).map(([key, lang]) => (
               <option key={key} value={key}>
                 {lang.name}
@@ -28,7 +41,11 @@ function CodeEditorPanel({
           </select>
         </div>
 
-        <button className="btn btn-primary btn-sm gap-2" disabled={isRunning} onClick={onRunCode}>
+        <button
+          className="btn btn-primary btn-sm gap-2"
+          disabled={isRunning}
+          onClick={onRunCode}
+        >
           {isRunning ? (
             <>
               <Loader2Icon className="size-4 animate-spin" />

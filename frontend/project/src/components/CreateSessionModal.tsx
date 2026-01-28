@@ -1,5 +1,17 @@
 import { Code2Icon, LoaderIcon, PlusIcon } from "lucide-react";
-import { PROBLEMS } from "../data/problems";
+import { PROBLEMS } from "../data/problem";
+import type { Dispatch, SetStateAction } from "react";
+import type { SessionConfig } from "../types";
+
+// Update this part to handle string input/output properly
+interface CreateSessionModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  roomConfig: SessionConfig;
+  setRoomConfig: Dispatch<SetStateAction<SessionConfig>>;
+  onCreateRoom: () => void;
+  isCreating: boolean;
+}
 
 function CreateSessionModal({
   isOpen,
@@ -8,7 +20,7 @@ function CreateSessionModal({
   setRoomConfig,
   onCreateRoom,
   isCreating,
-}) {
+}: CreateSessionModalProps) {
   const problems = Object.values(PROBLEMS);
 
   if (!isOpen) return null;
@@ -30,11 +42,15 @@ function CreateSessionModal({
               className="select w-full"
               value={roomConfig.problem}
               onChange={(e) => {
-                const selectedProblem = problems.find((p) => p.title === e.target.value);
-                setRoomConfig({
-                  difficulty: selectedProblem.difficulty,
-                  problem: e.target.value,
-                });
+                const selectedProblem = problems.find(
+                  (p) => p.title === e.target.value
+                );
+                if (selectedProblem) {
+                  setRoomConfig({
+                    difficulty: selectedProblem.difficulty,
+                    problem: e.target.value,
+                  });
+                }
               }}
             >
               <option value="" disabled>
@@ -56,10 +72,12 @@ function CreateSessionModal({
               <div>
                 <p className="font-semibold">Room Summary:</p>
                 <p>
-                  Problem: <span className="font-medium">{roomConfig.problem}</span>
+                  Problem:{" "}
+                  <span className="font-medium">{roomConfig.problem}</span>
                 </p>
                 <p>
-                  Max Participants: <span className="font-medium">2 (1-on-1 session)</span>
+                  Max Participants:{" "}
+                  <span className="font-medium">2 (1-on-1 session)</span>
                 </p>
               </div>
             </div>

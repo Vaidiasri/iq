@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
-import { PROBLEMS } from "../data/problems";
+import { useNavigate, useParams } from "react-router-dom";
+import { PROBLEMS } from "../data/problem";
 import Navbar from "../components/Navbar";
 
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels";
@@ -11,15 +11,25 @@ import { executeCode } from "../lib/piston";
 
 import toast from "react-hot-toast";
 import confetti from "canvas-confetti";
+import type { CodeExecutionResult } from "../types";
 
 function ProblemPage() {
-  const { id } = useParams();
+  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const [currentProblemId, setCurrentProblemId] = useState("two-sum");
   const [selectedLanguage, setSelectedLanguage] = useState("javascript");
-  const [code, setCode] = useState(PROBLEMS[currentProblemId].starterCode.javascript);
-  const [output, setOutput] = useState(null);
+
+  // Safe access to starterCode
+  const initialCode =
+    PROBLEMS[currentProblemId]?.starterCode?.[selectedLanguage] || "";
+  const [code, setCode] = useState(initialCode);
+
+  const [output, setOutput] = useState<{
+    success: boolean;
+    output?: string;
+    error?: string;
+  } | null>(null);
   const [isRunning, setIsRunning] = useState(false);
 
   const currentProblem = PROBLEMS[currentProblemId];
@@ -28,19 +38,20 @@ function ProblemPage() {
   useEffect(() => {
     if (id && PROBLEMS[id]) {
       setCurrentProblemId(id);
-      setCode(PROBLEMS[id].starterCode[selectedLanguage]);
+      setCode(PROBLEMS[id].starterCode[selectedLanguage] || "");
       setOutput(null);
     }
   }, [id, selectedLanguage]);
 
-  const handleLanguageChange = (e) => {
+  const handleLanguageChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLang = e.target.value;
     setSelectedLanguage(newLang);
-    setCode(currentProblem.starterCode[newLang]);
+    setCode(currentProblem.starterCode[newLang] || "");
     setOutput(null);
   };
 
-  const handleProblemChange = (newProblemId) => navigate(`/problem/${newProblemId}`);
+  const handleProblemChange = (newProblemId: string) =>
+    navigate(`/problem/${newProblemId}`);
 
   const triggerConfetti = () => {
     confetti({
@@ -56,7 +67,7 @@ function ProblemPage() {
     });
   };
 
-  const normalizeOutput = (output) => {
+  const normalizeOutput = (output: string) => {
     // normalize output for comparison (trim whitespace, handle different spacing)
     return output
       .trim()
@@ -74,7 +85,7 @@ function ProblemPage() {
       .join("\n");
   };
 
-  const checkIfTestsPassed = (actualOutput, expectedOutput) => {
+  const checkIfTestsPassed = (actualOutput: string, expectedOutput: string) => {
     const normalizedActual = normalizeOutput(actualOutput);
     const normalizedExpected = normalizeOutput(expectedOutput);
 
@@ -93,7 +104,11 @@ function ProblemPage() {
 
     if (result.success) {
       const expectedOutput = currentProblem.expectedOutput[selectedLanguage];
-      const testsPassed = checkIfTestsPassed(result.output, expectedOutput);
+      // result.output is defined when success is true
+      const testsPassed = checkIfTestsPassed(
+        result.output || "",
+        expectedOutput
+      );
 
       if (testsPassed) {
         triggerConfetti();
@@ -134,7 +149,7 @@ function ProblemPage() {
                   code={code}
                   isRunning={isRunning}
                   onLanguageChange={handleLanguageChange}
-                  onCodeChange={setCode}
+                  onCodeChange={(val) => setCode(val || "")}
                   onRunCode={handleRunCode}
                 />
               </Panel>

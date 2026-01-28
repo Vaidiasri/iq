@@ -1,6 +1,14 @@
 import { TrophyIcon, UsersIcon } from "lucide-react";
 
-function StatsCards({ activeSessionsCount, recentSessionsCount }) {
+interface StatsCardsProps {
+  activeSessionsCount: number;
+  recentSessionsCount: number;
+}
+
+function StatsCards({
+  activeSessionsCount,
+  recentSessionsCount,
+}: StatsCardsProps) {
   return (
     <div className="lg:col-span-1 grid grid-cols-1 gap-6">
       {/* Active Count */}
