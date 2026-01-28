@@ -13,11 +13,14 @@ import sessionRoutes from "./routes/sessionRoute.js";
 
 const app = express();
 
-const __dirname = path.resolve();
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // middleware
 app.use(express.json());
-// credentials:true meaning?? => server allows a browser to include cookies on request
+// credentials:true allows cookies. origin:ENV.CLIENT_URL or same-origin for production
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 app.use(clerkMiddleware()); // this adds auth field to request object: req.auth()
 
@@ -30,11 +33,16 @@ app.get("/health", (req, res) => {
 });
 
 // make our app ready for deployment
+console.log("Environment:", ENV.NODE_ENV);
 if (ENV.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/project/dist")));
+  // src/server.js -> ../../frontend/project/dist
+  const frontendPath = path.join(__dirname, "../../frontend/project/dist");
+  console.log("Serving static files from:", frontendPath);
+  
+  app.use(express.static(frontendPath));
 
-  app.get(/.*/, (req, res) => {
-    res.sendFile(path.join(__dirname, "../frontend", "project", "dist", "index.html"));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(frontendPath, "index.html"));
   });
 }
 
