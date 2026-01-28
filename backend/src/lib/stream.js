@@ -7,6 +7,7 @@ const apiSecret = ENV.STREAM_API_SECRET;
 
 if (!apiKey || !apiSecret) {
   console.error("STREAM_API_KEY or STREAM_API_SECRET is missing");
+  throw new Error("Stream API credentials are not configured properly");
 }
 
 export const chatClient = StreamChat.getInstance(apiKey, apiSecret); // will be used chat features
@@ -15,9 +16,10 @@ export const streamClient = new StreamClient(apiKey, apiSecret); // will be used
 export const upsertStreamUser = async (userData) => {
   try {
     await chatClient.upsertUser(userData);
-    console.log("Stream user upserted successfully:", userData);
+    console.log("Stream user upserted successfully:", userData.id);
   } catch (error) {
     console.error("Error upserting Stream user:", error);
+    throw error; // Re-throw the error so it can be caught by the caller
   }
 };
 
