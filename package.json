@@ -4,10 +4,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prebuild": "npm run clean",
-    "build": "npm install --prefix backend && npm install --prefix frontend/project --include=dev && npm run build --prefix frontend/project",
-    "clean": "node -e \"const fs = require('fs'); const path = require('path'); const distPath = path.join(__dirname, 'frontend', 'project', 'dist'); if (fs.existsSync(distPath)) { fs.rmSync(distPath, { recursive: true, force: true }); console.log('✓ Cleaned old build'); }\"",
-    "start": "npm run start --prefix backend"
+    "build": "cd backend && npm install && cd ../frontend/project && npm install && npm run build",
+    "start": "cd backend && npm start"
   },
   "repository": {
     "type": "git",
